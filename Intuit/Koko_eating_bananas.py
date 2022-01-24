@@ -14,6 +14,7 @@ class Solution:
             
             while low<=high:
                 
+             
                 mid=(low+high)//2
                 
                 time=0
