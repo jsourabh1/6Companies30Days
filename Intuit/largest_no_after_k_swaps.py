@@ -1,43 +1,57 @@
+def helper(s, k, maxstr, ctr):
+    # print("YES")
+    if k == 0 or ctr == len(s):
+        return
+
+    n = len(s)
+
+    maxx = s[ctr]
+
+    for i in range(ctr+1, n):
+
+        if int(maxx) < int(s[i]):
+            maxx = s[i]
+
+    if maxx != s[ctr]:
+        k -= 1
+
+        for j in range(n-1, ctr, -1):
+
+            if int(s[j]) == int(maxx):
+                s[j], s[ctr] = s[ctr], s[j]
+
+                if int(maxstr[0]) < int("".join(map(str, s))):
+                    maxstr[0] = "".join(map(str, s))
+
+                helper(s, k, maxstr, ctr+1)
+
+                s[j], s[ctr] = s[ctr], s[j]
+    else:
+        helper(s, k, maxstr, ctr+1)
+
+
 class Solution:
-    
+
     #Function to find the largest number after k swaps.
-    def findMaximumNum(self,s,k):
+    def findMaximumNum(self, s, k):
         #code here
-        ans=[]
-        
-        for i in range(len(s)):
-            
-            ans.append([i,int(s[i])])
-            
-        ans.sort(reverse=True,key=lambda x:(x[1],x[0]))
-        temp=list(map(int,s.strip()))
-        # print(ans)
-        for i in range(len(s)):
-            
-            while ans and (ans[0][0]<i):
-                ans.pop(0)
-                
-            if not ans:
-                break
-            if ans[0][1]==int(s[i]):
-                continue
-            # if [i,int(s[i])] not in ans:
-            #     continue
-            index=ans.index([i,int(s[i])])
-            
-            
-            
-            ans[0][0],ans[index][0]=ans[index][0],ans[0][0]
-            
-            temp[i],temp[ans[index][0]]=ans[0][1],temp[i]
-            # print(temp,ans)
-            k-=1
-            if k==0:
-                break
-        # print(temp)  
-        return "".join(map(str,temp))
+
+        maxx = [s]
+        s = list(map(str, s.strip()))
+        helper(s, k, maxx, 0)
+
+        return maxx[0]
+
+#{
+#  Driver Code Starts
+#Initial Template for Python 3
 
 
-obj=Solution()
+if __name__ == "__main__":
+    for _ in range(1):
+        k = 3
+        s = "3435335"
+        ob = Solution()
+        print(ob.findMaximumNum(s, k))
 
-obj.findMaximumNum("1234567",4)
+# } Driver Code Ends
